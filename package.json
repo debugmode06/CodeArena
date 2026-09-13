@@ -1,0 +1,30 @@
+{
+  "name": "pomelo",
+  "version": "0.3.1",
+  "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "start": "turbo run start",
+    "dev:infra": "docker compose -f docker/app/docker-compose.dev.yaml -f docker/citron/docker-compose.dev.yaml --project-directory . up mongo citron -d --remove-orphans",
+    "dev:down": "docker compose -f docker/app/docker-compose.dev.yaml -f docker/citron/docker-compose.dev.yaml --project-directory . down --remove-orphans",
+    "dev": "node scripts/dev.mjs",
+    "dev:no-docker": "node scripts/dev.mjs --no-docker",
+    "dev:app": "turbo run dev --filter=@pomelo/server --filter=@pomelo/client",
+    "mock:citron": "node scripts/mock-citron.mjs",
+    "create-admin": "node scripts/create-admin.mjs",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean && rm -rf node_modules .turbo"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "turbo": "^2.9.16",
+    "typescript": "^6.0.2"
+  },
+  "engines": {
+    "npm": "Use pnpm",
+    "yarn": "Use pnpm",
+    "pnpm": ">=10.0.0"
+  }
+}

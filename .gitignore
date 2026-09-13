@@ -1,0 +1,15 @@
+node_modules
+.turbo
+.env*
+!.env.example
+build.tar.gz
+.pnpm-store
+runtime/
+config/
+data/
+dist/
+bin/
+.next/
+.mongo_data
+*.log
+.serena

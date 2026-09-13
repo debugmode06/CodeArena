@@ -1,0 +1,161 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-background-navbar: var(--background-navbar);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Mountain Meadow Color Palette */
+  --color-mountain-meadow-50: #eafff7;
+  --color-mountain-meadow-100: #cdfeea;
+  --color-mountain-meadow-200: #a0fadb;
+  --color-mountain-meadow-300: #63f2c9;
+  --color-mountain-meadow-400: #25e2b2;
+  --color-mountain-meadow-500: #00b88f;
+  --color-mountain-meadow-600: #00a480;
+  --color-mountain-meadow-700: #00836a;
+  --color-mountain-meadow-800: #006755;
+  --color-mountain-meadow-900: #005547;
+  --color-mountain-meadow-950: #003029;
+}
+
+:root {
+  --radius: 0.625rem;
+
+  /* Light Mode - Mountain Meadow Theme */
+  --background: #ffffff;
+  --background-navbar: #ffffff;
+  --foreground: #003029;
+  --card: #ffffff;
+  --card-foreground: #003029;
+  --popover: #ffffff;
+  --popover-foreground: #003029;
+  --primary: #00b88f;
+  --primary-foreground: #ffffff;
+  --secondary: #eafff7;
+  --secondary-foreground: #003029;
+  --muted: #eafff7;
+  --muted-foreground: #006755;
+  --accent: #cdfeea;
+  --accent-foreground: #003029;
+  --destructive: #ef4444;
+  --border: #a0fadb;
+  --input: #eafff7;
+  --ring: #00b88f;
+
+  /* Charts */
+  --chart-1: #00b88f;
+  --chart-2: #25e2b2;
+  --chart-3: #63f2c9;
+  --chart-4: #a0fadb;
+  --chart-5: #cdfeea;
+
+  /* Sidebar */
+  --sidebar: #ffffff;
+}
+
+.dark {
+  --background: #0b0f11;
+  --background-navbar: #07090a;
+
+  --foreground: #e5e9f0;
+  --card: #0b0f11;
+  --card-foreground: #e5e9f0;
+  --popover: #181d1f;
+  --popover-foreground: #e5e9f0;
+  --primary: #00b88f;
+  --primary-foreground: #ffffff;
+  --secondary: #1a2224;
+  --secondary-foreground: #d1d5db;
+  --muted: #15191b;
+  --muted-foreground: #a0aab4;
+  --accent: #2dd4bf;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --border: #4b5563;
+  --input: #1f2628;
+  --ring: #00ffb0;
+
+  /* Charts */
+  --chart-1: #00ffb0;
+  --chart-2: #1de9b6;
+  --chart-3: #43e97b;
+  --chart-4: #ffd700;
+  /* Gold for luxury */
+  --chart-5: #8fa7a3;
+
+  /* Sidebar */
+  --sidebar: #101413;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+/* The app banner takes real space at the top of the viewport, so "a screen" means
+   the viewport minus that bar. Redefining these two keeps every existing h-screen /
+   min-h-screen page correct instead of touching each one. Deliberately unlayered:
+   Tailwind emits its utilities inside @layer utilities, and unlayered rules win. */
+.h-screen {
+  height: calc(100dvh - var(--banner-h, 0px));
+}
+
+.min-h-screen {
+  min-height: calc(100dvh - var(--banner-h, 0px));
+}

@@ -1,0 +1,12 @@
+node_modules
+**/node_modules
+.pnpm-store
+.pnpm
+.git
+.turbo
+src
+**/src
+*.ts
+*.tsx
+!client/.next/standalone/node_modules
+!client/.next/standalone/**/node_modules

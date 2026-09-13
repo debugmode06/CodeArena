@@ -1,0 +1,432 @@
+{
+  "language": "c",
+  "lineComment": "//",
+  "boilerplate": "#include <stdio.h>\n\nvoid {method}({args}) {\n    // TODO: Implement solution\n    printf(\"Output goes here\\n\");\n}",
+  "template": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\n{preamble}\n\n{code}\n\nint main() {\n{input_reading_code}\n    return 0;\n}",
+  "types": {
+    "int": {
+      "reader": "scanf(\"%d\", &{var});",
+      "hint": "int",
+      "parse": "atoi(_t)"
+    },
+    "long": {
+      "reader": "scanf(\"%lld\", &{var});",
+      "hint": "long long",
+      "parse": "atoll(_t)"
+    },
+    "float": {
+      "reader": "scanf(\"%f\", &{var});",
+      "hint": "float",
+      "parse": "(float)atof(_t)"
+    },
+    "double": {
+      "reader": "scanf(\"%lf\", &{var});",
+      "hint": "double",
+      "parse": "atof(_t)"
+    },
+    "bool": {
+      "reader": "scanf(\"%d\", &{var});",
+      "hint": "int",
+      "parse": "atoi(_t)"
+    },
+    "char": {
+      "reader": "scanf(\" %c\", &{var});",
+      "hint": "char",
+      "parse": "_t[0]"
+    },
+    "string": {
+      "reader": "{var} = (char*)malloc(256); scanf(\"%255s\", {var});",
+      "hint": "char*",
+      "parse": "strdup(_t)"
+    },
+    "int_array": {
+      "reader": [
+        "int {var}_size; scanf(\"%d\", &{var}_size);",
+        "int* {var} = (int*)malloc(sizeof(int) * ({var}_size > 0 ? {var}_size : 1));",
+        "for (int i = 0; i < {var}_size; i++) { scanf(\"%d\", &{var}[i]); }"
+      ],
+      "hint": "int*",
+      "sizeParams": [
+        {
+          "decl": "int {var}_size",
+          "name": "{var}_size"
+        }
+      ],
+      "selfDeclaring": true
+    },
+    "float_array": {
+      "reader": [
+        "int {var}_size; scanf(\"%d\", &{var}_size);",
+        "float* {var} = (float*)malloc(sizeof(float) * ({var}_size > 0 ? {var}_size : 1));",
+        "for (int i = 0; i < {var}_size; i++) { scanf(\"%f\", &{var}[i]); }"
+      ],
+      "hint": "float*",
+      "sizeParams": [
+        {
+          "decl": "int {var}_size",
+          "name": "{var}_size"
+        }
+      ],
+      "selfDeclaring": true
+    },
+    "string_array": {
+      "reader": [
+        "int {var}_size; scanf(\"%d\", &{var}_size);",
+        "char** {var} = (char**)malloc(sizeof(char*) * ({var}_size > 0 ? {var}_size : 1));",
+        "for (int i = 0; i < {var}_size; i++) { {var}[i] = (char*)malloc(256); scanf(\"%255s\", {var}[i]); }"
+      ],
+      "hint": "char**",
+      "sizeParams": [
+        {
+          "decl": "int {var}_size",
+          "name": "{var}_size"
+        }
+      ],
+      "selfDeclaring": true
+    },
+    "int_matrix": {
+      "reader": [
+        "int {var}_rows, {var}_cols; scanf(\"%d %d\", &{var}_rows, &{var}_cols);",
+        "int** {var} = (int**)malloc(sizeof(int*) * ({var}_rows > 0 ? {var}_rows : 1));",
+        "for (int i = 0; i < {var}_rows; i++) {",
+        "    {var}[i] = (int*)malloc(sizeof(int) * ({var}_cols > 0 ? {var}_cols : 1));",
+        "    for (int j = 0; j < {var}_cols; j++) { scanf(\"%d\", &{var}[i][j]); }",
+        "}"
+      ],
+      "hint": "int**",
+      "sizeParams": [
+        {
+          "decl": "int {var}_rows",
+          "name": "{var}_rows"
+        },
+        {
+          "decl": "int {var}_cols",
+          "name": "{var}_cols"
+        }
+      ],
+      "selfDeclaring": true
+    }
+  },
+  "structures": {
+    "linked_list": {
+      "hint": "ListNode*",
+      "preamble": [
+        "// Definition for singly-linked list.",
+        "typedef struct ListNode {",
+        "    {elem_hint} val;",
+        "    struct ListNode* next;",
+        "} ListNode;"
+      ],
+      "reader": [
+        "int {var}_n; scanf(\"%d\", &{var}_n);",
+        "ListNode* {var} = NULL;",
+        "ListNode** {var}_tail = &{var};",
+        "for (int i = 0; i < {var}_n; i++) {",
+        "    {elem_hint} _v; {elem_read}",
+        "    *{var}_tail = (ListNode*)malloc(sizeof(ListNode));",
+        "    (*{var}_tail)->val = _v;",
+        "    (*{var}_tail)->next = NULL;",
+        "    {var}_tail = &(*{var}_tail)->next;",
+        "}"
+      ]
+    },
+    "linked_list_cyclic": {
+      "hint": "ListNode*",
+      "preamble": [
+        "// Definition for singly-linked list.",
+        "typedef struct ListNode {",
+        "    {elem_hint} val;",
+        "    struct ListNode* next;",
+        "} ListNode;"
+      ],
+      "reader": [
+        "int {var}_n; scanf(\"%d\", &{var}_n);",
+        "ListNode** {var}_ns = (ListNode**)malloc(sizeof(ListNode*) * ({var}_n > 0 ? {var}_n : 1));",
+        "for (int i = 0; i < {var}_n; i++) {",
+        "    {elem_hint} _v; {elem_read}",
+        "    {var}_ns[i] = (ListNode*)malloc(sizeof(ListNode));",
+        "    {var}_ns[i]->val = _v;",
+        "    {var}_ns[i]->next = NULL;",
+        "    if (i > 0) { {var}_ns[i - 1]->next = {var}_ns[i]; }",
+        "}",
+        "int {var}_pos; scanf(\"%d\", &{var}_pos);",
+        "if ({var}_n > 0 && {var}_pos >= 0 && {var}_pos < {var}_n) { {var}_ns[{var}_n - 1]->next = {var}_ns[{var}_pos]; }",
+        "ListNode* {var} = {var}_n > 0 ? {var}_ns[0] : NULL;"
+      ]
+    },
+    "doubly_linked_list": {
+      "hint": "DListNode*",
+      "preamble": [
+        "// Definition for doubly-linked list.",
+        "typedef struct DListNode {",
+        "    {elem_hint} val;",
+        "    struct DListNode* prev;",
+        "    struct DListNode* next;",
+        "} DListNode;"
+      ],
+      "reader": [
+        "int {var}_n; scanf(\"%d\", &{var}_n);",
+        "DListNode* {var} = NULL;",
+        "DListNode* {var}_prev = NULL;",
+        "for (int i = 0; i < {var}_n; i++) {",
+        "    {elem_hint} _v; {elem_read}",
+        "    DListNode* {var}_node = (DListNode*)malloc(sizeof(DListNode));",
+        "    {var}_node->val = _v;",
+        "    {var}_node->prev = {var}_prev;",
+        "    {var}_node->next = NULL;",
+        "    if ({var}_prev) { {var}_prev->next = {var}_node; } else { {var} = {var}_node; }",
+        "    {var}_prev = {var}_node;",
+        "}"
+      ]
+    },
+    "binary_tree": {
+      "hint": "TreeNode*",
+      "preamble": [
+        "// Definition for a binary tree node.",
+        "typedef struct TreeNode {",
+        "    {elem_hint} val;",
+        "    struct TreeNode* left;",
+        "    struct TreeNode* right;",
+        "} TreeNode;"
+      ],
+      "reader": [
+        "int {var}_n; scanf(\"%d\", &{var}_n);",
+        "TreeNode** {var}_ns = (TreeNode**)malloc(sizeof(TreeNode*) * ({var}_n > 0 ? {var}_n : 1));",
+        "for (int i = 0; i < {var}_n; i++) {",
+        "    char _t[64]; scanf(\"%63s\", _t);",
+        "    if (strcmp(_t, \"null\") == 0) { {var}_ns[i] = NULL; continue; }",
+        "    {var}_ns[i] = (TreeNode*)malloc(sizeof(TreeNode));",
+        "    {var}_ns[i]->val = {elem_parse};",
+        "    {var}_ns[i]->left = NULL;",
+        "    {var}_ns[i]->right = NULL;",
+        "}",
+        "int {var}_j = 1;",
+        "for (int i = 0; i < {var}_n && {var}_j < {var}_n; i++) {",
+        "    if ({var}_ns[i] == NULL) continue;",
+        "    if ({var}_j < {var}_n) { {var}_ns[i]->left = {var}_ns[{var}_j++]; }",
+        "    if ({var}_j < {var}_n) { {var}_ns[i]->right = {var}_ns[{var}_j++]; }",
+        "}",
+        "TreeNode* {var} = {var}_n > 0 ? {var}_ns[0] : NULL;"
+      ]
+    },
+    "binary_tree_parent": {
+      "hint": "TreeNode*",
+      "preamble": [
+        "// Definition for a binary tree node that knows its parent.",
+        "typedef struct TreeNode {",
+        "    {elem_hint} val;",
+        "    struct TreeNode* left;",
+        "    struct TreeNode* right;",
+        "    struct TreeNode* parent;",
+        "} TreeNode;"
+      ],
+      "reader": [
+        "int {var}_n; scanf(\"%d\", &{var}_n);",
+        "TreeNode** {var}_ns = (TreeNode**)malloc(sizeof(TreeNode*) * ({var}_n > 0 ? {var}_n : 1));",
+        "for (int i = 0; i < {var}_n; i++) {",
+        "    char _t[64]; scanf(\"%63s\", _t);",
+        "    if (strcmp(_t, \"null\") == 0) { {var}_ns[i] = NULL; continue; }",
+        "    {var}_ns[i] = (TreeNode*)malloc(sizeof(TreeNode));",
+        "    {var}_ns[i]->val = {elem_parse};",
+        "    {var}_ns[i]->left = NULL;",
+        "    {var}_ns[i]->right = NULL;",
+        "    {var}_ns[i]->parent = NULL;",
+        "}",
+        "int {var}_j = 1;",
+        "for (int i = 0; i < {var}_n && {var}_j < {var}_n; i++) {",
+        "    if ({var}_ns[i] == NULL) continue;",
+        "    if ({var}_j < {var}_n) {",
+        "        {var}_ns[i]->left = {var}_ns[{var}_j];",
+        "        if ({var}_ns[{var}_j]) { {var}_ns[{var}_j]->parent = {var}_ns[i]; }",
+        "        {var}_j++;",
+        "    }",
+        "    if ({var}_j < {var}_n) {",
+        "        {var}_ns[i]->right = {var}_ns[{var}_j];",
+        "        if ({var}_ns[{var}_j]) { {var}_ns[{var}_j]->parent = {var}_ns[i]; }",
+        "        {var}_j++;",
+        "    }",
+        "}",
+        "TreeNode* {var} = {var}_n > 0 ? {var}_ns[0] : NULL;"
+      ]
+    },
+    "nary_tree": {
+      "hint": "Node*",
+      "preamble": [
+        "// Definition for an N-ary tree node.",
+        "typedef struct Node {",
+        "    {elem_hint} val;",
+        "    int numChildren;",
+        "    struct Node** children;",
+        "} Node;"
+      ],
+      "reader": [
+        "int {var}_n; scanf(\"%d\", &{var}_n);",
+        "char** {var}_toks = (char**)malloc(sizeof(char*) * ({var}_n > 0 ? {var}_n : 1));",
+        "for (int i = 0; i < {var}_n; i++) { {var}_toks[i] = (char*)malloc(64); scanf(\"%63s\", {var}_toks[i]); }",
+        "Node* {var} = NULL;",
+        "if ({var}_n > 0) {",
+        "    Node** {var}_q = (Node**)malloc(sizeof(Node*) * {var}_n);",
+        "    int {var}_qn = 0, {var}_qh = 0, {var}_i = 2;",
+        "    {var} = (Node*)malloc(sizeof(Node));",
+        "    { char* _t = {var}_toks[0]; {var}->val = {elem_parse}; }",
+        "    {var}->numChildren = 0; {var}->children = NULL;",
+        "    {var}_q[{var}_qn++] = {var};",
+        "    while ({var}_qh < {var}_qn && {var}_i < {var}_n) {",
+        "        Node* {var}_cur = {var}_q[{var}_qh++];",
+        "        int {var}_c = 0;",
+        "        while ({var}_i + {var}_c < {var}_n && strcmp({var}_toks[{var}_i + {var}_c], \"null\") != 0) { {var}_c++; }",
+        "        {var}_cur->numChildren = {var}_c;",
+        "        {var}_cur->children = {var}_c > 0 ? (Node**)malloc(sizeof(Node*) * {var}_c) : NULL;",
+        "        for (int k = 0; k < {var}_c; k++) {",
+        "            Node* {var}_ch = (Node*)malloc(sizeof(Node));",
+        "            { char* _t = {var}_toks[{var}_i + k]; {var}_ch->val = {elem_parse}; }",
+        "            {var}_ch->numChildren = 0; {var}_ch->children = NULL;",
+        "            {var}_cur->children[k] = {var}_ch;",
+        "            {var}_q[{var}_qn++] = {var}_ch;",
+        "        }",
+        "        {var}_i += {var}_c + 1;",
+        "    }",
+        "}"
+      ]
+    },
+    "graph": {
+      "hint": "Graph*",
+      "preamble": [
+        "// An undirected graph as an adjacency list; nodes are numbered 0 .. numNodes - 1.",
+        "typedef struct Graph {",
+        "    int numNodes;",
+        "    int* degree;",
+        "    int** neighbors;",
+        "} Graph;"
+      ],
+      "reader": [
+        "int {var}_n, {var}_m; scanf(\"%d %d\", &{var}_n, &{var}_m);",
+        "Graph* {var} = (Graph*)malloc(sizeof(Graph));",
+        "{var}->numNodes = {var}_n;",
+        "{var}->degree = (int*)calloc({var}_n > 0 ? {var}_n : 1, sizeof(int));",
+        "{var}->neighbors = (int**)malloc(sizeof(int*) * ({var}_n > 0 ? {var}_n : 1));",
+        "int* {var}_from = (int*)malloc(sizeof(int) * ({var}_m > 0 ? {var}_m : 1));",
+        "int* {var}_to = (int*)malloc(sizeof(int) * ({var}_m > 0 ? {var}_m : 1));",
+        "for (int i = 0; i < {var}_m; i++) {",
+        "    scanf(\"%d %d\", &{var}_from[i], &{var}_to[i]);",
+        "    {var}->degree[{var}_from[i]]++;",
+        "    {var}->degree[{var}_to[i]]++;",
+        "}",
+        "for (int i = 0; i < {var}_n; i++) {",
+        "    {var}->neighbors[i] = (int*)malloc(sizeof(int) * ({var}->degree[i] > 0 ? {var}->degree[i] : 1));",
+        "    {var}->degree[i] = 0;",
+        "}",
+        "for (int i = 0; i < {var}_m; i++) {",
+        "    {var}->neighbors[{var}_from[i]][{var}->degree[{var}_from[i]]++] = {var}_to[i];",
+        "    {var}->neighbors[{var}_to[i]][{var}->degree[{var}_to[i]]++] = {var}_from[i];",
+        "}"
+      ]
+    },
+    "digraph": {
+      "hint": "Graph*",
+      "preamble": [
+        "// A directed graph as an adjacency list; nodes are numbered 0 .. numNodes - 1.",
+        "typedef struct Graph {",
+        "    int numNodes;",
+        "    int* degree;",
+        "    int** neighbors;",
+        "} Graph;"
+      ],
+      "reader": [
+        "int {var}_n, {var}_m; scanf(\"%d %d\", &{var}_n, &{var}_m);",
+        "Graph* {var} = (Graph*)malloc(sizeof(Graph));",
+        "{var}->numNodes = {var}_n;",
+        "{var}->degree = (int*)calloc({var}_n > 0 ? {var}_n : 1, sizeof(int));",
+        "{var}->neighbors = (int**)malloc(sizeof(int*) * ({var}_n > 0 ? {var}_n : 1));",
+        "int* {var}_from = (int*)malloc(sizeof(int) * ({var}_m > 0 ? {var}_m : 1));",
+        "int* {var}_to = (int*)malloc(sizeof(int) * ({var}_m > 0 ? {var}_m : 1));",
+        "for (int i = 0; i < {var}_m; i++) {",
+        "    scanf(\"%d %d\", &{var}_from[i], &{var}_to[i]);",
+        "    {var}->degree[{var}_from[i]]++;",
+        "}",
+        "for (int i = 0; i < {var}_n; i++) {",
+        "    {var}->neighbors[i] = (int*)malloc(sizeof(int) * ({var}->degree[i] > 0 ? {var}->degree[i] : 1));",
+        "    {var}->degree[i] = 0;",
+        "}",
+        "for (int i = 0; i < {var}_m; i++) {",
+        "    {var}->neighbors[{var}_from[i]][{var}->degree[{var}_from[i]]++] = {var}_to[i];",
+        "}"
+      ]
+    },
+    "weighted_graph": {
+      "hint": "WGraph*",
+      "preamble": [
+        "// An undirected weighted graph as an adjacency list; nodes are numbered 0 .. numNodes - 1.",
+        "typedef struct WGraph {",
+        "    int numNodes;",
+        "    int* degree;",
+        "    int** neighbors;",
+        "    int** weights;",
+        "} WGraph;"
+      ],
+      "reader": [
+        "int {var}_n, {var}_m; scanf(\"%d %d\", &{var}_n, &{var}_m);",
+        "WGraph* {var} = (WGraph*)malloc(sizeof(WGraph));",
+        "{var}->numNodes = {var}_n;",
+        "{var}->degree = (int*)calloc({var}_n > 0 ? {var}_n : 1, sizeof(int));",
+        "{var}->neighbors = (int**)malloc(sizeof(int*) * ({var}_n > 0 ? {var}_n : 1));",
+        "{var}->weights = (int**)malloc(sizeof(int*) * ({var}_n > 0 ? {var}_n : 1));",
+        "int* {var}_from = (int*)malloc(sizeof(int) * ({var}_m > 0 ? {var}_m : 1));",
+        "int* {var}_to = (int*)malloc(sizeof(int) * ({var}_m > 0 ? {var}_m : 1));",
+        "int* {var}_weight = (int*)malloc(sizeof(int) * ({var}_m > 0 ? {var}_m : 1));",
+        "for (int i = 0; i < {var}_m; i++) {",
+        "    scanf(\"%d %d %d\", &{var}_from[i], &{var}_to[i], &{var}_weight[i]);",
+        "    {var}->degree[{var}_from[i]]++;",
+        "    {var}->degree[{var}_to[i]]++;",
+        "}",
+        "for (int i = 0; i < {var}_n; i++) {",
+        "    {var}->neighbors[i] = (int*)malloc(sizeof(int) * ({var}->degree[i] > 0 ? {var}->degree[i] : 1));",
+        "    {var}->weights[i] = (int*)malloc(sizeof(int) * ({var}->degree[i] > 0 ? {var}->degree[i] : 1));",
+        "    {var}->degree[i] = 0;",
+        "}",
+        "for (int i = 0; i < {var}_m; i++) {",
+        "    {var}->neighbors[{var}_from[i]][{var}->degree[{var}_from[i]]] = {var}_to[i];",
+        "    {var}->weights[{var}_from[i]][{var}->degree[{var}_from[i]]++] = {var}_weight[i];",
+        "    {var}->neighbors[{var}_to[i]][{var}->degree[{var}_to[i]]] = {var}_from[i];",
+        "    {var}->weights[{var}_to[i]][{var}->degree[{var}_to[i]]++] = {var}_weight[i];",
+        "}"
+      ]
+    },
+    "weighted_digraph": {
+      "hint": "WGraph*",
+      "preamble": [
+        "// A directed weighted graph as an adjacency list; nodes are numbered 0 .. numNodes - 1.",
+        "typedef struct WGraph {",
+        "    int numNodes;",
+        "    int* degree;",
+        "    int** neighbors;",
+        "    int** weights;",
+        "} WGraph;"
+      ],
+      "reader": [
+        "int {var}_n, {var}_m; scanf(\"%d %d\", &{var}_n, &{var}_m);",
+        "WGraph* {var} = (WGraph*)malloc(sizeof(WGraph));",
+        "{var}->numNodes = {var}_n;",
+        "{var}->degree = (int*)calloc({var}_n > 0 ? {var}_n : 1, sizeof(int));",
+        "{var}->neighbors = (int**)malloc(sizeof(int*) * ({var}_n > 0 ? {var}_n : 1));",
+        "{var}->weights = (int**)malloc(sizeof(int*) * ({var}_n > 0 ? {var}_n : 1));",
+        "int* {var}_from = (int*)malloc(sizeof(int) * ({var}_m > 0 ? {var}_m : 1));",
+        "int* {var}_to = (int*)malloc(sizeof(int) * ({var}_m > 0 ? {var}_m : 1));",
+        "int* {var}_weight = (int*)malloc(sizeof(int) * ({var}_m > 0 ? {var}_m : 1));",
+        "for (int i = 0; i < {var}_m; i++) {",
+        "    scanf(\"%d %d %d\", &{var}_from[i], &{var}_to[i], &{var}_weight[i]);",
+        "    {var}->degree[{var}_from[i]]++;",
+        "}",
+        "for (int i = 0; i < {var}_n; i++) {",
+        "    {var}->neighbors[i] = (int*)malloc(sizeof(int) * ({var}->degree[i] > 0 ? {var}->degree[i] : 1));",
+        "    {var}->weights[i] = (int*)malloc(sizeof(int) * ({var}->degree[i] > 0 ? {var}->degree[i] : 1));",
+        "    {var}->degree[i] = 0;",
+        "}",
+        "for (int i = 0; i < {var}_m; i++) {",
+        "    {var}->neighbors[{var}_from[i]][{var}->degree[{var}_from[i]]] = {var}_to[i];",
+        "    {var}->weights[{var}_from[i]][{var}->degree[{var}_from[i]]++] = {var}_weight[i];",
+        "}"
+      ]
+    }
+  }
+}

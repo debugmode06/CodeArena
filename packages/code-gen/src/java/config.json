@@ -1,0 +1,326 @@
+{
+  "language": "java",
+  "lineComment": "//",
+  "boilerplate": "class Code {\n    public static void {method}({args}) {\n        // TODO: Implement solution\n        System.out.println(\"Output goes here\");\n    }\n}",
+  "template": "import java.util.*;\nimport java.util.stream.*;\n\n{preamble}\n\nclass Main {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n{input_reading_code}\n    }\n}\n\n{code}",
+  "types": {
+    "int": {
+      "reader": "scanner.nextInt()",
+      "hint": "int",
+      "parse": "Integer.parseInt(_t)"
+    },
+    "long": {
+      "reader": "scanner.nextLong()",
+      "hint": "long",
+      "parse": "Long.parseLong(_t)"
+    },
+    "float": {
+      "reader": "scanner.nextFloat()",
+      "hint": "float",
+      "parse": "Float.parseFloat(_t)"
+    },
+    "double": {
+      "reader": "scanner.nextDouble()",
+      "hint": "double",
+      "parse": "Double.parseDouble(_t)"
+    },
+    "bool": {
+      "reader": "scanner.nextInt() != 0",
+      "hint": "boolean",
+      "parse": "Integer.parseInt(_t) != 0"
+    },
+    "char": {
+      "reader": "scanner.next().charAt(0)",
+      "hint": "char",
+      "parse": "_t.charAt(0)"
+    },
+    "string": {
+      "reader": "scanner.next()",
+      "hint": "String",
+      "parse": "_t"
+    },
+    "int_array": {
+      "reader": [
+        "int {var}_size = scanner.nextInt();",
+        "int[] {var} = new int[{var}_size];",
+        "for (int i = 0; i < {var}_size; i++) { {var}[i] = scanner.nextInt(); }"
+      ],
+      "hint": "int[]",
+      "selfDeclaring": true
+    },
+    "float_array": {
+      "reader": [
+        "int {var}_size = scanner.nextInt();",
+        "float[] {var} = new float[{var}_size];",
+        "for (int i = 0; i < {var}_size; i++) { {var}[i] = scanner.nextFloat(); }"
+      ],
+      "hint": "float[]",
+      "selfDeclaring": true
+    },
+    "string_array": {
+      "reader": [
+        "int {var}_size = scanner.nextInt();",
+        "String[] {var} = new String[{var}_size];",
+        "for (int i = 0; i < {var}_size; i++) { {var}[i] = scanner.next(); }"
+      ],
+      "hint": "String[]",
+      "selfDeclaring": true
+    },
+    "int_matrix": {
+      "reader": [
+        "int {var}_rows = scanner.nextInt();",
+        "int {var}_cols = scanner.nextInt();",
+        "int[][] {var} = new int[{var}_rows][{var}_cols];",
+        "for (int i = 0; i < {var}_rows; i++) {",
+        "    for (int j = 0; j < {var}_cols; j++) { {var}[i][j] = scanner.nextInt(); }",
+        "}"
+      ],
+      "hint": "int[][]",
+      "selfDeclaring": true
+    }
+  },
+  "structures": {
+    "linked_list": {
+      "hint": "ListNode",
+      "preamble": [
+        "// Definition for singly-linked list.",
+        "class ListNode {",
+        "    {elem_hint} val;",
+        "    ListNode next;",
+        "    ListNode({elem_hint} val) { this.val = val; }",
+        "    ListNode({elem_hint} val, ListNode next) { this.val = val; this.next = next; }",
+        "}"
+      ],
+      "reader": [
+        "int {var}_n = scanner.nextInt();",
+        "ListNode {var} = null, {var}_prev = null;",
+        "for (int i = 0; i < {var}_n; i++) {",
+        "    {elem_hint} _v = {elem_reader};",
+        "    ListNode {var}_node = new ListNode(_v);",
+        "    if ({var}_prev == null) { {var} = {var}_node; } else { {var}_prev.next = {var}_node; }",
+        "    {var}_prev = {var}_node;",
+        "}"
+      ]
+    },
+    "linked_list_cyclic": {
+      "hint": "ListNode",
+      "preamble": [
+        "// Definition for singly-linked list.",
+        "class ListNode {",
+        "    {elem_hint} val;",
+        "    ListNode next;",
+        "    ListNode({elem_hint} val) { this.val = val; }",
+        "    ListNode({elem_hint} val, ListNode next) { this.val = val; this.next = next; }",
+        "}"
+      ],
+      "reader": [
+        "int {var}_n = scanner.nextInt();",
+        "List<ListNode> {var}_ns = new ArrayList<>();",
+        "for (int i = 0; i < {var}_n; i++) {",
+        "    {elem_hint} _v = {elem_reader};",
+        "    {var}_ns.add(new ListNode(_v));",
+        "    if (i > 0) { {var}_ns.get(i - 1).next = {var}_ns.get(i); }",
+        "}",
+        "int {var}_pos = scanner.nextInt();",
+        "if ({var}_n > 0 && {var}_pos >= 0 && {var}_pos < {var}_n) { {var}_ns.get({var}_n - 1).next = {var}_ns.get({var}_pos); }",
+        "ListNode {var} = {var}_n > 0 ? {var}_ns.get(0) : null;"
+      ]
+    },
+    "doubly_linked_list": {
+      "hint": "DListNode",
+      "preamble": [
+        "// Definition for doubly-linked list.",
+        "class DListNode {",
+        "    {elem_hint} val;",
+        "    DListNode prev;",
+        "    DListNode next;",
+        "    DListNode({elem_hint} val) { this.val = val; }",
+        "}"
+      ],
+      "reader": [
+        "int {var}_n = scanner.nextInt();",
+        "DListNode {var} = null, {var}_prev = null;",
+        "for (int i = 0; i < {var}_n; i++) {",
+        "    {elem_hint} _v = {elem_reader};",
+        "    DListNode {var}_node = new DListNode(_v);",
+        "    {var}_node.prev = {var}_prev;",
+        "    if ({var}_prev == null) { {var} = {var}_node; } else { {var}_prev.next = {var}_node; }",
+        "    {var}_prev = {var}_node;",
+        "}"
+      ]
+    },
+    "binary_tree": {
+      "hint": "TreeNode",
+      "preamble": [
+        "// Definition for a binary tree node.",
+        "class TreeNode {",
+        "    {elem_hint} val;",
+        "    TreeNode left;",
+        "    TreeNode right;",
+        "    TreeNode({elem_hint} val) { this.val = val; }",
+        "    TreeNode({elem_hint} val, TreeNode left, TreeNode right) { this.val = val; this.left = left; this.right = right; }",
+        "}"
+      ],
+      "reader": [
+        "int {var}_n = scanner.nextInt();",
+        "TreeNode[] {var}_ns = new TreeNode[{var}_n];",
+        "for (int i = 0; i < {var}_n; i++) {",
+        "    String _t = scanner.next();",
+        "    if (!_t.equals(\"null\")) { {var}_ns[i] = new TreeNode({elem_parse}); }",
+        "}",
+        "int {var}_j = 1;",
+        "for (int i = 0; i < {var}_n && {var}_j < {var}_n; i++) {",
+        "    if ({var}_ns[i] == null) continue;",
+        "    if ({var}_j < {var}_n) { {var}_ns[i].left = {var}_ns[{var}_j++]; }",
+        "    if ({var}_j < {var}_n) { {var}_ns[i].right = {var}_ns[{var}_j++]; }",
+        "}",
+        "TreeNode {var} = {var}_n > 0 ? {var}_ns[0] : null;"
+      ]
+    },
+    "binary_tree_parent": {
+      "hint": "TreeNode",
+      "preamble": [
+        "// Definition for a binary tree node that knows its parent.",
+        "class TreeNode {",
+        "    {elem_hint} val;",
+        "    TreeNode left;",
+        "    TreeNode right;",
+        "    TreeNode parent;",
+        "    TreeNode({elem_hint} val) { this.val = val; }",
+        "}"
+      ],
+      "reader": [
+        "int {var}_n = scanner.nextInt();",
+        "TreeNode[] {var}_ns = new TreeNode[{var}_n];",
+        "for (int i = 0; i < {var}_n; i++) {",
+        "    String _t = scanner.next();",
+        "    if (!_t.equals(\"null\")) { {var}_ns[i] = new TreeNode({elem_parse}); }",
+        "}",
+        "int {var}_j = 1;",
+        "for (int i = 0; i < {var}_n && {var}_j < {var}_n; i++) {",
+        "    if ({var}_ns[i] == null) continue;",
+        "    if ({var}_j < {var}_n) {",
+        "        {var}_ns[i].left = {var}_ns[{var}_j];",
+        "        if ({var}_ns[{var}_j] != null) { {var}_ns[{var}_j].parent = {var}_ns[i]; }",
+        "        {var}_j++;",
+        "    }",
+        "    if ({var}_j < {var}_n) {",
+        "        {var}_ns[i].right = {var}_ns[{var}_j];",
+        "        if ({var}_ns[{var}_j] != null) { {var}_ns[{var}_j].parent = {var}_ns[i]; }",
+        "        {var}_j++;",
+        "    }",
+        "}",
+        "TreeNode {var} = {var}_n > 0 ? {var}_ns[0] : null;"
+      ]
+    },
+    "nary_tree": {
+      "hint": "Node",
+      "preamble": [
+        "// Definition for an N-ary tree node.",
+        "class Node {",
+        "    {elem_hint} val;",
+        "    List<Node> children = new ArrayList<>();",
+        "    Node({elem_hint} val) { this.val = val; }",
+        "    Node({elem_hint} val, List<Node> children) { this.val = val; this.children = children; }",
+        "}"
+      ],
+      "reader": [
+        "int {var}_n = scanner.nextInt();",
+        "String[] {var}_toks = new String[{var}_n];",
+        "for (int i = 0; i < {var}_n; i++) { {var}_toks[i] = scanner.next(); }",
+        "Node {var} = null;",
+        "if ({var}_n > 0) {",
+        "    String _t = {var}_toks[0];",
+        "    {var} = new Node({elem_parse});",
+        "    List<Node> {var}_q = new ArrayList<>();",
+        "    {var}_q.add({var});",
+        "    int {var}_qh = 0, {var}_i = 2;",
+        "    while ({var}_qh < {var}_q.size() && {var}_i < {var}_n) {",
+        "        Node {var}_cur = {var}_q.get({var}_qh++);",
+        "        while ({var}_i < {var}_n && !{var}_toks[{var}_i].equals(\"null\")) {",
+        "            _t = {var}_toks[{var}_i++];",
+        "            Node {var}_ch = new Node({elem_parse});",
+        "            {var}_cur.children.add({var}_ch);",
+        "            {var}_q.add({var}_ch);",
+        "        }",
+        "        {var}_i++;",
+        "    }",
+        "}"
+      ]
+    },
+    "graph": {
+      "hint": "List<List<Integer>>",
+      "reader": [
+        "int {var}_n = scanner.nextInt(), {var}_m = scanner.nextInt();",
+        "List<List<Integer>> {var} = new ArrayList<>();",
+        "for (int i = 0; i < {var}_n; i++) { {var}.add(new ArrayList<>()); }",
+        "for (int i = 0; i < {var}_m; i++) {",
+        "    int _from = scanner.nextInt(), _to = scanner.nextInt();",
+        "    {var}.get(_from).add(_to);",
+        "    {var}.get(_to).add(_from);",
+        "}"
+      ],
+      "preamble": [
+        "// An undirected graph as an adjacency list; nodes are numbered 0 .. graph.size() - 1."
+      ]
+    },
+    "digraph": {
+      "hint": "List<List<Integer>>",
+      "reader": [
+        "int {var}_n = scanner.nextInt(), {var}_m = scanner.nextInt();",
+        "List<List<Integer>> {var} = new ArrayList<>();",
+        "for (int i = 0; i < {var}_n; i++) { {var}.add(new ArrayList<>()); }",
+        "for (int i = 0; i < {var}_m; i++) {",
+        "    int _from = scanner.nextInt(), _to = scanner.nextInt();",
+        "    {var}.get(_from).add(_to);",
+        "}"
+      ],
+      "preamble": [
+        "// A directed graph as an adjacency list; nodes are numbered 0 .. graph.size() - 1."
+      ]
+    },
+    "weighted_graph": {
+      "hint": "List<List<Edge>>",
+      "reader": [
+        "int {var}_n = scanner.nextInt(), {var}_m = scanner.nextInt();",
+        "List<List<Edge>> {var} = new ArrayList<>();",
+        "for (int i = 0; i < {var}_n; i++) { {var}.add(new ArrayList<>()); }",
+        "for (int i = 0; i < {var}_m; i++) {",
+        "    int _from = scanner.nextInt(), _to = scanner.nextInt(), _weight = scanner.nextInt();",
+        "    {var}.get(_from).add(new Edge(_to, _weight));",
+        "    {var}.get(_to).add(new Edge(_from, _weight));",
+        "}"
+      ],
+      "preamble": [
+        "// Definition for a weighted edge.",
+        "class Edge {",
+        "    int to;",
+        "    int weight;",
+        "    Edge(int to, int weight) { this.to = to; this.weight = weight; }",
+        "}",
+        "// An undirected weighted graph as an adjacency list; nodes are numbered 0 .. graph.size() - 1."
+      ]
+    },
+    "weighted_digraph": {
+      "hint": "List<List<Edge>>",
+      "reader": [
+        "int {var}_n = scanner.nextInt(), {var}_m = scanner.nextInt();",
+        "List<List<Edge>> {var} = new ArrayList<>();",
+        "for (int i = 0; i < {var}_n; i++) { {var}.add(new ArrayList<>()); }",
+        "for (int i = 0; i < {var}_m; i++) {",
+        "    int _from = scanner.nextInt(), _to = scanner.nextInt(), _weight = scanner.nextInt();",
+        "    {var}.get(_from).add(new Edge(_to, _weight));",
+        "}"
+      ],
+      "preamble": [
+        "// Definition for a weighted edge.",
+        "class Edge {",
+        "    int to;",
+        "    int weight;",
+        "    Edge(int to, int weight) { this.to = to; this.weight = weight; }",
+        "}",
+        "// A directed weighted graph as an adjacency list; nodes are numbered 0 .. graph.size() - 1."
+      ]
+    }
+  }
+}

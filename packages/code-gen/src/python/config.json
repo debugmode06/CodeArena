@@ -1,0 +1,278 @@
+{
+  "language": "python",
+  "lineComment": "#",
+  "boilerplate": "def {method}({args}):\n    # TODO: Implement solution\n    print(\"Output goes here\")",
+  "template": "import sys\nfrom typing import List, Optional, Tuple\n\n{preamble}\n\n{code}\n\nif __name__ == '__main__':\n    try:\n        input_data = sys.stdin.read().split()\n        iterator = iter(input_data)\n\n{input_reading_code}\n    except Exception as e:\n        sys.stderr.write(str(e))\n        sys.exit(1)",
+  "types": {
+    "int": {
+      "reader": "int(next(iterator))",
+      "hint": "int",
+      "parse": "int(_t)"
+    },
+    "long": {
+      "reader": "int(next(iterator))",
+      "hint": "int",
+      "parse": "int(_t)"
+    },
+    "float": {
+      "reader": "float(next(iterator))",
+      "hint": "float",
+      "parse": "float(_t)"
+    },
+    "double": {
+      "reader": "float(next(iterator))",
+      "hint": "float",
+      "parse": "float(_t)"
+    },
+    "bool": {
+      "reader": "bool(int(next(iterator)))",
+      "hint": "bool",
+      "parse": "bool(int(_t))"
+    },
+    "char": {
+      "reader": "next(iterator)",
+      "hint": "str",
+      "parse": "_t"
+    },
+    "string": {
+      "reader": "next(iterator)",
+      "hint": "str",
+      "parse": "_t"
+    },
+    "int_array": {
+      "reader": "[int(next(iterator)) for _ in range(int(next(iterator)))]",
+      "hint": "list[int]"
+    },
+    "float_array": {
+      "reader": "[float(next(iterator)) for _ in range(int(next(iterator)))]",
+      "hint": "list[float]"
+    },
+    "string_array": {
+      "reader": "[next(iterator) for _ in range(int(next(iterator)))]",
+      "hint": "list[str]"
+    },
+    "int_matrix": {
+      "reader": [
+        "{var}_rows = int(next(iterator))",
+        "{var}_cols = int(next(iterator))",
+        "{var} = [[int(next(iterator)) for _ in range({var}_cols)] for _ in range({var}_rows)]"
+      ],
+      "hint": "list[list[int]]",
+      "selfDeclaring": true
+    }
+  },
+  "structures": {
+    "linked_list": {
+      "hint": "ListNode",
+      "preamble": [
+        "# Definition for singly-linked list.",
+        "class ListNode:",
+        "    def __init__(self, val, next=None):",
+        "        self.val: {elem_hint} = val",
+        "        self.next: Optional[\"ListNode\"] = next"
+      ],
+      "reader": [
+        "{var}_n = int(next(iterator))",
+        "{var}_ns = [ListNode({elem_reader}) for _ in range({var}_n)]",
+        "for _i in range({var}_n - 1):",
+        "    {var}_ns[_i].next = {var}_ns[_i + 1]",
+        "{var} = {var}_ns[0] if {var}_n > 0 else None"
+      ]
+    },
+    "linked_list_cyclic": {
+      "hint": "ListNode",
+      "preamble": [
+        "# Definition for singly-linked list.",
+        "class ListNode:",
+        "    def __init__(self, val, next=None):",
+        "        self.val: {elem_hint} = val",
+        "        self.next: Optional[\"ListNode\"] = next"
+      ],
+      "reader": [
+        "{var}_n = int(next(iterator))",
+        "{var}_ns = [ListNode({elem_reader}) for _ in range({var}_n)]",
+        "for _i in range({var}_n - 1):",
+        "    {var}_ns[_i].next = {var}_ns[_i + 1]",
+        "{var}_pos = int(next(iterator))",
+        "if {var}_n > 0 and 0 <= {var}_pos < {var}_n:",
+        "    {var}_ns[{var}_n - 1].next = {var}_ns[{var}_pos]",
+        "{var} = {var}_ns[0] if {var}_n > 0 else None"
+      ]
+    },
+    "doubly_linked_list": {
+      "hint": "DListNode",
+      "preamble": [
+        "# Definition for doubly-linked list.",
+        "class DListNode:",
+        "    def __init__(self, val, prev=None, next=None):",
+        "        self.val: {elem_hint} = val",
+        "        self.prev: Optional[\"DListNode\"] = prev",
+        "        self.next: Optional[\"DListNode\"] = next"
+      ],
+      "reader": [
+        "{var}_n = int(next(iterator))",
+        "{var}_ns = [DListNode({elem_reader}) for _ in range({var}_n)]",
+        "for _i in range({var}_n - 1):",
+        "    {var}_ns[_i].next = {var}_ns[_i + 1]",
+        "    {var}_ns[_i + 1].prev = {var}_ns[_i]",
+        "{var} = {var}_ns[0] if {var}_n > 0 else None"
+      ]
+    },
+    "binary_tree": {
+      "hint": "TreeNode",
+      "preamble": [
+        "# Definition for a binary tree node.",
+        "class TreeNode:",
+        "    def __init__(self, val, left=None, right=None):",
+        "        self.val: {elem_hint} = val",
+        "        self.left: Optional[\"TreeNode\"] = left",
+        "        self.right: Optional[\"TreeNode\"] = right"
+      ],
+      "reader": [
+        "{var}_n = int(next(iterator))",
+        "{var}_toks = [next(iterator) for _ in range({var}_n)]",
+        "{var}_ns = [None if _t == 'null' else TreeNode({elem_parse}) for _t in {var}_toks]",
+        "{var}_j = 1",
+        "for _node in {var}_ns:",
+        "    if _node is None or {var}_j >= {var}_n:",
+        "        continue",
+        "    _node.left = {var}_ns[{var}_j]",
+        "    {var}_j += 1",
+        "    if {var}_j < {var}_n:",
+        "        _node.right = {var}_ns[{var}_j]",
+        "        {var}_j += 1",
+        "{var} = {var}_ns[0] if {var}_n > 0 else None"
+      ]
+    },
+    "binary_tree_parent": {
+      "hint": "TreeNode",
+      "preamble": [
+        "# Definition for a binary tree node that knows its parent.",
+        "class TreeNode:",
+        "    def __init__(self, val, left=None, right=None, parent=None):",
+        "        self.val: {elem_hint} = val",
+        "        self.left: Optional[\"TreeNode\"] = left",
+        "        self.right: Optional[\"TreeNode\"] = right",
+        "        self.parent: Optional[\"TreeNode\"] = parent"
+      ],
+      "reader": [
+        "{var}_n = int(next(iterator))",
+        "{var}_toks = [next(iterator) for _ in range({var}_n)]",
+        "{var}_ns = [None if _t == 'null' else TreeNode({elem_parse}) for _t in {var}_toks]",
+        "{var}_j = 1",
+        "for _node in {var}_ns:",
+        "    if _node is None or {var}_j >= {var}_n:",
+        "        continue",
+        "    _node.left = {var}_ns[{var}_j]",
+        "    if _node.left is not None:",
+        "        _node.left.parent = _node",
+        "    {var}_j += 1",
+        "    if {var}_j < {var}_n:",
+        "        _node.right = {var}_ns[{var}_j]",
+        "        if _node.right is not None:",
+        "            _node.right.parent = _node",
+        "        {var}_j += 1",
+        "{var} = {var}_ns[0] if {var}_n > 0 else None"
+      ]
+    },
+    "nary_tree": {
+      "hint": "Node",
+      "preamble": [
+        "# Definition for an N-ary tree node.",
+        "class Node:",
+        "    def __init__(self, val, children):",
+        "        self.val: {elem_hint} = val",
+        "        self.children: List[\"Node\"] = children"
+      ],
+      "reader": [
+        "{var}_n = int(next(iterator))",
+        "{var}_toks = [next(iterator) for _ in range({var}_n)]",
+        "{var} = None",
+        "if {var}_n > 0:",
+        "    _t = {var}_toks[0]",
+        "    {var} = Node({elem_parse}, [])",
+        "    {var}_q = [{var}]",
+        "    {var}_qh = 0",
+        "    {var}_i = 2",
+        "    while {var}_qh < len({var}_q) and {var}_i < {var}_n:",
+        "        _cur = {var}_q[{var}_qh]",
+        "        {var}_qh += 1",
+        "        while {var}_i < {var}_n and {var}_toks[{var}_i] != 'null':",
+        "            _t = {var}_toks[{var}_i]",
+        "            {var}_i += 1",
+        "            _ch = Node({elem_parse}, [])",
+        "            _cur.children.append(_ch)",
+        "            {var}_q.append(_ch)",
+        "        {var}_i += 1"
+      ]
+    },
+    "graph": {
+      "hint": "Graph",
+      "reader": [
+        "{var}_n = int(next(iterator))",
+        "{var}_m = int(next(iterator))",
+        "{var} = [[] for _ in range({var}_n)]",
+        "for _ in range({var}_m):",
+        "    _u = int(next(iterator))",
+        "    _w = int(next(iterator))",
+        "    {var}[_u].append(_w)",
+        "    {var}[_w].append(_u)"
+      ],
+      "preamble": [
+        "# An undirected graph as an adjacency list; nodes are numbered 0 .. len(graph) - 1.",
+        "Graph = List[List[int]]"
+      ]
+    },
+    "digraph": {
+      "hint": "Graph",
+      "reader": [
+        "{var}_n = int(next(iterator))",
+        "{var}_m = int(next(iterator))",
+        "{var} = [[] for _ in range({var}_n)]",
+        "for _ in range({var}_m):",
+        "    _u = int(next(iterator))",
+        "    _w = int(next(iterator))",
+        "    {var}[_u].append(_w)"
+      ],
+      "preamble": [
+        "# A directed graph as an adjacency list; nodes are numbered 0 .. len(graph) - 1.",
+        "Graph = List[List[int]]"
+      ]
+    },
+    "weighted_graph": {
+      "hint": "WGraph",
+      "reader": [
+        "{var}_n = int(next(iterator))",
+        "{var}_m = int(next(iterator))",
+        "{var} = [[] for _ in range({var}_n)]",
+        "for _ in range({var}_m):",
+        "    _u = int(next(iterator))",
+        "    _w = int(next(iterator))",
+        "    _wt = int(next(iterator))",
+        "    {var}[_u].append((_w, _wt))",
+        "    {var}[_w].append((_u, _wt))"
+      ],
+      "preamble": [
+        "# An undirected weighted graph as an adjacency list of (node, weight) pairs.",
+        "WGraph = List[List[Tuple[int, int]]]"
+      ]
+    },
+    "weighted_digraph": {
+      "hint": "WGraph",
+      "reader": [
+        "{var}_n = int(next(iterator))",
+        "{var}_m = int(next(iterator))",
+        "{var} = [[] for _ in range({var}_n)]",
+        "for _ in range({var}_m):",
+        "    _u = int(next(iterator))",
+        "    _w = int(next(iterator))",
+        "    _wt = int(next(iterator))",
+        "    {var}[_u].append((_w, _wt))"
+      ],
+      "preamble": [
+        "# A directed weighted graph as an adjacency list of (node, weight) pairs.",
+        "WGraph = List[List[Tuple[int, int]]]"
+      ]
+    }
+  }
+}

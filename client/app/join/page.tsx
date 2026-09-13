@@ -1,0 +1,109 @@
+"use client";
+
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSession, signIn } from "next-auth/react";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+import { toast } from "@/components/ui/banner";
+
+
+import { joinTest } from "@/actions/contest";
+
+export default function JoinContestPage() {
+  const router = useRouter();
+  const { data: session, status } = useSession();
+  const [otp, setOtp] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const isLoaded = status !== "loading";
+  const isSignedIn = status === "authenticated";
+  const allFilled = otp.length === 6;
+
+  const handleJoin = async () => {
+    if (!allFilled) return;
+
+    setIsLoading(true);
+    try {
+      const result = await joinTest(otp);
+
+      if (result.success) {
+        router.push(`/test/${result.contestId}`);
+      } else {
+        toast.error(result.message || "Invalid Join ID");
+      }
+    } catch (error) {
+      toast.error("Connection failed. Check if backend is running.");
+      console.error("Join Error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
+  if (!isLoaded) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+
+  if (!isSignedIn) {
+    return (
+      <main className="min-h-screen w-full flex items-center justify-center bg-background">
+        <div className="w-full max-w-md bg-card text-foreground rounded-2xl shadow-2xl p-10 flex flex-col items-center space-y-6 border border-border text-center">
+          <h1 className="text-2xl font-bold">Sign In Required</h1>
+          <p className="text-muted-foreground">You must be logged in to join tests.</p>
+          <button
+            onClick={() => signIn()}
+            className="w-full h-11 bg-primary text-primary-foreground font-semibold rounded-full hover:bg-primary/90 transition"
+          >
+            Sign In
+          </button>
+        </div>
+      </main>
+    );
+  }
+
+  return (
+    <main className="min-h-screen w-full flex items-center justify-center bg-background">
+      <div className="w-full max-w-md bg-card text-foreground rounded-2xl shadow-2xl p-10 flex flex-col items-center space-y-10 border border-border">
+        <div className="text-center">
+          <h1 className="text-3xl md:text-4xl font-extrabold tracking-wide relative inline-block">
+            JOIN A TEST
+            <span className="block w-16 h-1 mt-2 mx-auto bg-primary rounded-full"></span>
+          </h1>
+          <p className="mt-4 text-sm text-muted-foreground italic">
+            Enter the 6-digit code for your contest
+          </p>
+        </div>
+
+        <InputOTP
+          maxLength={6}
+          value={otp}
+          onChange={setOtp}
+          disabled={isLoading}
+        >
+          <InputOTPGroup className="flex gap-2 justify-center">
+            {[...Array(6)].map((_, i) => (
+              <InputOTPSlot
+                key={i}
+                index={i}
+                className="bg-muted rounded-xl border border-border font-semibold text-2xl w-12 h-14 text-center text-foreground"
+              />
+            ))}
+          </InputOTPGroup>
+        </InputOTP>
+
+        <div className="w-full space-y-4">
+          <button
+            onClick={handleJoin}
+            disabled={!allFilled || isLoading}
+            className={`w-full h-11 text-lg font-semibold rounded-full shadow-md transition
+              ${allFilled && !isLoading ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}
+          >
+            {isLoading ? "Checking Code..." : "Join Contest"}
+          </button>
+        </div>
+      </div>
+    </main>
+  );
+}

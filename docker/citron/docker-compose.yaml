@@ -1,0 +1,23 @@
+x-logging: &default-logging
+  logging:
+    driver: json-file
+    options:
+      max-size: 100M
+
+services:
+  citron:
+    image: justmodo/citron:latest
+    profiles: ["internal-citron"]
+    command: ["citron", "-config", "/opt/citron/configs/citron.conf", "-address", "0.0.0.0:2358"]
+    cap_add: [SYS_ADMIN]
+    security_opt:
+      - apparmor=unconfined
+      - systempaths=unconfined
+    cgroup: private
+    tmpfs:
+      - /box:size=2g,mode=1777,exec
+    volumes:
+      - /opt/pomelo/config/citron.conf:/opt/citron/configs/citron.conf:ro
+      - /opt/pomelo/config/languages.toml:/opt/citron/configs/languages.toml:ro
+    <<: *default-logging
+    restart: always

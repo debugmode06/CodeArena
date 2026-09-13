@@ -1,0 +1,42 @@
+{
+  "questions": [
+    {
+      "type": "mcq",
+      "title": "What is the time complexity of binary search?",
+      "description": "Binary search finds the position of a target value within a sorted array.",
+      "marks": 10,
+      "difficulty": "Easy",
+      "questionType": "Single Correct",
+      "options": ["O(n)", "O(log n)", "O(n log n)", "O(1)"],
+      "correctAnswer": 1
+    },
+    {
+      "type": "mcq",
+      "title": "Which of the following are sorting algorithms?",
+      "description": "Select all options that are sorting algorithms.",
+      "marks": 10,
+      "difficulty": "Easy",
+      "questionType": "Multiple Correct",
+      "options": ["Quicksort", "Binary Search", "Merge Sort", "Depth-First Search"],
+      "correctAnswer": [0, 2]
+    },
+    {
+      "type": "coding",
+      "title": "Two Sum",
+      "description": "Return indices of the two numbers that add up to the target.",
+      "marks": 30,
+      "difficulty": "Easy",
+      "constraints": "2 <= nums.length <= 10^4",
+      "inputFormat": "The first token is n, followed by n integers for nums, followed by target.",
+      "outputFormat": "Two space-separated indices",
+      "functionName": "twoSum",
+      "inputVariables": [
+        { "variable": "nums", "type": "int_array" },
+        { "variable": "target", "type": "int" }
+      ],
+      "testcases": [
+        { "input": "4 2 7 11 15 9", "output": "0 1", "isVisible": true, "explanation": "nums[0] + nums[1] = 2 + 7 = 9, so the answer is [0, 1]." }
+      ]
+    }
+  ]
+}

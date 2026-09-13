@@ -1,0 +1,63 @@
+services:
+  mongo:
+    image: mongo:7.0
+    restart: unless-stopped
+    profiles: ["internal-db"]
+    ports:
+      - "127.0.0.1:27017:27017"
+    volumes:
+      - /opt/pomelo/data/database/mongo:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+
+  server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=${MONGODB_URI}
+      - PORT=8080
+      - AUTH_SECRET=${AUTH_SECRET}
+      - CITRON_URL=${CITRON_URL}
+      - DOMAIN=${DOMAIN}
+      - PROTOCOL=${PROTOCOL:-http}
+    depends_on:
+      mongo:
+        condition: service_healthy
+        required: false
+    volumes:
+      - /opt/pomelo/data:/app/data
+      - /opt/pomelo/config:/app/config:ro
+
+  client:
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+    environment:
+      - NODE_ENV=production
+      - AUTH_SECRET=${AUTH_SECRET}
+      - AUTH_TRUST_HOST=true
+      - AUTH_URL=${PROTOCOL:-http}://${DOMAIN}
+      - DOMAIN=${DOMAIN}
+      - PROTOCOL=${PROTOCOL:-http}
+    depends_on:
+      server:
+        condition: service_started
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "${CADDY_HTTP_PORT:-80}:80"
+      - "${CADDY_HTTPS_PORT:-443}:443"
+    volumes:
+      - /opt/pomelo/config/Caddyfile:/etc/caddy/Caddyfile:ro
+      - /opt/pomelo/runtime/logs:/var/log/caddy
+    depends_on:
+      - client
+      - server

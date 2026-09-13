@@ -1,0 +1,325 @@
+{
+  "language": "cpp",
+  "lineComment": "//",
+  "boilerplate": "#include <bits/stdc++.h>\nusing namespace std;\n\nvoid {method}({args}) {\n    // TODO: Implement solution\n    cout << \"Output goes here\" << endl;\n}",
+  "template": "#include <bits/stdc++.h>\nusing namespace std;\n\n{preamble}\n\n{code}\n\nint main() {\n    ios_base::sync_with_stdio(false);\n    cin.tie(nullptr);\n{input_reading_code}\n    return 0;\n}",
+  "types": {
+    "int": {
+      "reader": "cin >> {var};",
+      "hint": "int",
+      "parse": "stoi(_t)"
+    },
+    "long": {
+      "reader": "cin >> {var};",
+      "hint": "long long",
+      "parse": "stoll(_t)"
+    },
+    "float": {
+      "reader": "cin >> {var};",
+      "hint": "double",
+      "parse": "stod(_t)"
+    },
+    "double": {
+      "reader": "cin >> {var};",
+      "hint": "double",
+      "parse": "stod(_t)"
+    },
+    "bool": {
+      "reader": "cin >> {var};",
+      "hint": "bool",
+      "parse": "stoi(_t) != 0"
+    },
+    "char": {
+      "reader": "cin >> {var};",
+      "hint": "char",
+      "parse": "_t[0]"
+    },
+    "string": {
+      "reader": "cin >> {var};",
+      "hint": "string",
+      "parse": "_t"
+    },
+    "int_array": {
+      "reader": [
+        "int {var}_size; cin >> {var}_size;",
+        "vector<int> {var}({var}_size);",
+        "for (auto &e : {var}) cin >> e;"
+      ],
+      "hint": "vector<int>&",
+      "selfDeclaring": true
+    },
+    "float_array": {
+      "reader": [
+        "int {var}_size; cin >> {var}_size;",
+        "vector<double> {var}({var}_size);",
+        "for (auto &e : {var}) cin >> e;"
+      ],
+      "hint": "vector<double>&",
+      "selfDeclaring": true
+    },
+    "string_array": {
+      "reader": [
+        "int {var}_size; cin >> {var}_size;",
+        "vector<string> {var}({var}_size);",
+        "for (auto &e : {var}) cin >> e;"
+      ],
+      "hint": "vector<string>&",
+      "selfDeclaring": true
+    },
+    "int_matrix": {
+      "reader": [
+        "int {var}_rows, {var}_cols; cin >> {var}_rows >> {var}_cols;",
+        "vector<vector<int>> {var}({var}_rows, vector<int>({var}_cols));",
+        "for (auto &r : {var}) for (auto &e : r) cin >> e;"
+      ],
+      "hint": "vector<vector<int>>&",
+      "selfDeclaring": true
+    }
+  },
+  "structures": {
+    "linked_list": {
+      "hint": "ListNode*",
+      "preamble": [
+        "// Definition for singly-linked list.",
+        "struct ListNode {",
+        "    {elem_hint} val;",
+        "    ListNode* next;",
+        "    ListNode({elem_hint} val) : val(val), next(nullptr) {}",
+        "    ListNode({elem_hint} val, ListNode* next) : val(val), next(next) {}",
+        "};"
+      ],
+      "reader": [
+        "int {var}_n; cin >> {var}_n;",
+        "ListNode* {var} = nullptr;",
+        "ListNode** {var}_tail = &{var};",
+        "for (int i = 0; i < {var}_n; i++) {",
+        "    {elem_hint} _v; {elem_read}",
+        "    *{var}_tail = new ListNode(_v);",
+        "    {var}_tail = &(*{var}_tail)->next;",
+        "}"
+      ]
+    },
+    "linked_list_cyclic": {
+      "hint": "ListNode*",
+      "preamble": [
+        "// Definition for singly-linked list.",
+        "struct ListNode {",
+        "    {elem_hint} val;",
+        "    ListNode* next;",
+        "    ListNode({elem_hint} val) : val(val), next(nullptr) {}",
+        "    ListNode({elem_hint} val, ListNode* next) : val(val), next(next) {}",
+        "};"
+      ],
+      "reader": [
+        "int {var}_n; cin >> {var}_n;",
+        "vector<ListNode*> {var}_ns;",
+        "for (int i = 0; i < {var}_n; i++) {",
+        "    {elem_hint} _v; {elem_read}",
+        "    {var}_ns.push_back(new ListNode(_v));",
+        "    if (i > 0) {var}_ns[i - 1]->next = {var}_ns[i];",
+        "}",
+        "int {var}_pos; cin >> {var}_pos;",
+        "if ({var}_n > 0 && {var}_pos >= 0 && {var}_pos < {var}_n) {var}_ns[{var}_n - 1]->next = {var}_ns[{var}_pos];",
+        "ListNode* {var} = {var}_n > 0 ? {var}_ns[0] : nullptr;"
+      ]
+    },
+    "doubly_linked_list": {
+      "hint": "DListNode*",
+      "preamble": [
+        "// Definition for doubly-linked list.",
+        "struct DListNode {",
+        "    {elem_hint} val;",
+        "    DListNode* prev;",
+        "    DListNode* next;",
+        "    DListNode({elem_hint} val) : val(val), prev(nullptr), next(nullptr) {}",
+        "};"
+      ],
+      "reader": [
+        "int {var}_n; cin >> {var}_n;",
+        "DListNode* {var} = nullptr;",
+        "DListNode* {var}_prev = nullptr;",
+        "for (int i = 0; i < {var}_n; i++) {",
+        "    {elem_hint} _v; {elem_read}",
+        "    DListNode* {var}_node = new DListNode(_v);",
+        "    {var}_node->prev = {var}_prev;",
+        "    if ({var}_prev) {var}_prev->next = {var}_node; else {var} = {var}_node;",
+        "    {var}_prev = {var}_node;",
+        "}"
+      ]
+    },
+    "binary_tree": {
+      "hint": "TreeNode*",
+      "preamble": [
+        "// Definition for a binary tree node.",
+        "struct TreeNode {",
+        "    {elem_hint} val;",
+        "    TreeNode* left;",
+        "    TreeNode* right;",
+        "    TreeNode({elem_hint} val) : val(val), left(nullptr), right(nullptr) {}",
+        "    TreeNode({elem_hint} val, TreeNode* left, TreeNode* right) : val(val), left(left), right(right) {}",
+        "};"
+      ],
+      "reader": [
+        "int {var}_n; cin >> {var}_n;",
+        "vector<TreeNode*> {var}_ns({var}_n, nullptr);",
+        "for (int i = 0; i < {var}_n; i++) {",
+        "    string _t; cin >> _t;",
+        "    if (_t == \"null\") continue;",
+        "    {var}_ns[i] = new TreeNode({elem_parse});",
+        "}",
+        "int {var}_j = 1;",
+        "for (int i = 0; i < {var}_n && {var}_j < {var}_n; i++) {",
+        "    if (!{var}_ns[i]) continue;",
+        "    if ({var}_j < {var}_n) {var}_ns[i]->left = {var}_ns[{var}_j++];",
+        "    if ({var}_j < {var}_n) {var}_ns[i]->right = {var}_ns[{var}_j++];",
+        "}",
+        "TreeNode* {var} = {var}_n > 0 ? {var}_ns[0] : nullptr;"
+      ]
+    },
+    "binary_tree_parent": {
+      "hint": "TreeNode*",
+      "preamble": [
+        "// Definition for a binary tree node that knows its parent.",
+        "struct TreeNode {",
+        "    {elem_hint} val;",
+        "    TreeNode* left;",
+        "    TreeNode* right;",
+        "    TreeNode* parent;",
+        "    TreeNode({elem_hint} val) : val(val), left(nullptr), right(nullptr), parent(nullptr) {}",
+        "};"
+      ],
+      "reader": [
+        "int {var}_n; cin >> {var}_n;",
+        "vector<TreeNode*> {var}_ns({var}_n, nullptr);",
+        "for (int i = 0; i < {var}_n; i++) {",
+        "    string _t; cin >> _t;",
+        "    if (_t == \"null\") continue;",
+        "    {var}_ns[i] = new TreeNode({elem_parse});",
+        "}",
+        "int {var}_j = 1;",
+        "for (int i = 0; i < {var}_n && {var}_j < {var}_n; i++) {",
+        "    if (!{var}_ns[i]) continue;",
+        "    if ({var}_j < {var}_n) {",
+        "        {var}_ns[i]->left = {var}_ns[{var}_j];",
+        "        if ({var}_ns[{var}_j]) {var}_ns[{var}_j]->parent = {var}_ns[i];",
+        "        {var}_j++;",
+        "    }",
+        "    if ({var}_j < {var}_n) {",
+        "        {var}_ns[i]->right = {var}_ns[{var}_j];",
+        "        if ({var}_ns[{var}_j]) {var}_ns[{var}_j]->parent = {var}_ns[i];",
+        "        {var}_j++;",
+        "    }",
+        "}",
+        "TreeNode* {var} = {var}_n > 0 ? {var}_ns[0] : nullptr;"
+      ]
+    },
+    "nary_tree": {
+      "hint": "Node*",
+      "preamble": [
+        "// Definition for an N-ary tree node.",
+        "struct Node {",
+        "    {elem_hint} val;",
+        "    vector<Node*> children;",
+        "    Node({elem_hint} val) : val(val) {}",
+        "    Node({elem_hint} val, vector<Node*> children) : val(val), children(children) {}",
+        "};"
+      ],
+      "reader": [
+        "int {var}_n; cin >> {var}_n;",
+        "vector<string> {var}_toks({var}_n);",
+        "for (auto &t : {var}_toks) cin >> t;",
+        "Node* {var} = nullptr;",
+        "if ({var}_n > 0) {",
+        "    { string _t = {var}_toks[0]; {var} = new Node({elem_parse}); }",
+        "    vector<Node*> {var}_q{ {var} };",
+        "    size_t {var}_qh = 0;",
+        "    int {var}_i = 2;",
+        "    while ({var}_qh < {var}_q.size() && {var}_i < {var}_n) {",
+        "        Node* {var}_cur = {var}_q[{var}_qh++];",
+        "        while ({var}_i < {var}_n && {var}_toks[{var}_i] != \"null\") {",
+        "            string _t = {var}_toks[{var}_i++];",
+        "            Node* {var}_ch = new Node({elem_parse});",
+        "            {var}_cur->children.push_back({var}_ch);",
+        "            {var}_q.push_back({var}_ch);",
+        "        }",
+        "        {var}_i++;",
+        "    }",
+        "}"
+      ]
+    },
+    "graph": {
+      "hint": "Graph&",
+      "reader": [
+        "int {var}_n, {var}_m; cin >> {var}_n >> {var}_m;",
+        "Graph {var}({var}_n);",
+        "for (int i = 0; i < {var}_m; i++) {",
+        "    int _from, _to; cin >> _from >> _to;",
+        "    {var}[_from].push_back(_to);",
+        "    {var}[_to].push_back(_from);",
+        "}"
+      ],
+      "preamble": [
+        "// An undirected graph as an adjacency list; nodes are numbered 0 .. graph.size() - 1.",
+        "using Graph = vector<vector<int>>;"
+      ]
+    },
+    "digraph": {
+      "hint": "Graph&",
+      "reader": [
+        "int {var}_n, {var}_m; cin >> {var}_n >> {var}_m;",
+        "Graph {var}({var}_n);",
+        "for (int i = 0; i < {var}_m; i++) {",
+        "    int _from, _to; cin >> _from >> _to;",
+        "    {var}[_from].push_back(_to);",
+        "}"
+      ],
+      "preamble": [
+        "// A directed graph as an adjacency list; nodes are numbered 0 .. graph.size() - 1.",
+        "using Graph = vector<vector<int>>;"
+      ]
+    },
+    "weighted_graph": {
+      "hint": "WGraph&",
+      "reader": [
+        "int {var}_n, {var}_m; cin >> {var}_n >> {var}_m;",
+        "WGraph {var}({var}_n);",
+        "for (int i = 0; i < {var}_m; i++) {",
+        "    int _from, _to, _weight; cin >> _from >> _to >> _weight;",
+        "    {var}[_from].push_back(Edge(_to, _weight));",
+        "    {var}[_to].push_back(Edge(_from, _weight));",
+        "}"
+      ],
+      "preamble": [
+        "// Definition for a weighted edge.",
+        "struct Edge {",
+        "    int to;",
+        "    int weight;",
+        "    Edge(int to, int weight) : to(to), weight(weight) {}",
+        "};",
+        "// An undirected weighted graph as an adjacency list; nodes are numbered 0 .. graph.size() - 1.",
+        "using WGraph = vector<vector<Edge>>;"
+      ]
+    },
+    "weighted_digraph": {
+      "hint": "WGraph&",
+      "reader": [
+        "int {var}_n, {var}_m; cin >> {var}_n >> {var}_m;",
+        "WGraph {var}({var}_n);",
+        "for (int i = 0; i < {var}_m; i++) {",
+        "    int _from, _to, _weight; cin >> _from >> _to >> _weight;",
+        "    {var}[_from].push_back(Edge(_to, _weight));",
+        "}"
+      ],
+      "preamble": [
+        "// Definition for a weighted edge.",
+        "struct Edge {",
+        "    int to;",
+        "    int weight;",
+        "    Edge(int to, int weight) : to(to), weight(weight) {}",
+        "};",
+        "// A directed weighted graph as an adjacency list; nodes are numbered 0 .. graph.size() - 1.",
+        "using WGraph = vector<vector<Edge>>;"
+      ]
+    }
+  }
+}
